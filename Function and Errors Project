@@ -1,0 +1,39 @@
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.18;
+
+contract pranavToken {
+    // public variables here
+    string public tokenName = "Metaverse";
+    string public tokenAbbrv = "MTS";
+    uint public totalSupply = 0;
+
+    /// mapping from user wallet address to token balance
+    mapping (address => uint) public balances;
+
+    
+    function mint(address _address, uint _value) public {
+        // Checking _value to be greater than zero or return the mentioned error message
+        require(_value > 0, "Value must be greater than zero");
+
+        totalSupply += _value;
+        balances[_address] += _value;
+
+        /* Assert that the balance of address has increased 
+            by _value or returns the error if condition failed
+        */
+        assert(balances[_address] >= _value);
+    }
+
+    
+    function burn(address _address, uint _value) public {
+        if (_value <=5) {
+            revert("Value must be greater than five"); // Revert if _value is 42
+        }
+        require(balances[_address] >= _value, "Insufficient balance"); // Require sufficient balance to burn
+
+        totalSupply -= _value;
+        balances[_address] -= _value;
+           // Assert that the balance of address has decreased by _value or is five
+        assert(balances[_address] <= balances[_address] + _value);
+    }
+}
